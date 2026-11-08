@@ -13,7 +13,8 @@ export function errorHandler(err, req, res, _next) {
   const status = err.status ?? err.statusCode ?? 500;
   if (status >= 500) console.error(err);
 
-  const hideMessage = status >= 500 && isProd;
+  // Hide internal details in production, except set-up errors marked safe to show.
+  const hideMessage = status >= 500 && isProd && !err.expose;
 
   res.status(status).json({
     error: {
