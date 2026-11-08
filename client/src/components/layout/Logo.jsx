@@ -7,7 +7,7 @@ export default function Logo({ to = '/', className = '' }) {
         <circle cx="16" cy="16" r="14" fill="var(--sun)" />
         <path d="M16 7v9l6 4" stroke="var(--ink)" strokeWidth="3" fill="none" strokeLinecap="round" />
       </svg>
-      <span className="font-display text-xl font-extrabold tracking-tight">noon</span>
+      <span className="font-display text-xl font-extrabold tracking-tight">Noon</span>
     </Link>
   );
 }
