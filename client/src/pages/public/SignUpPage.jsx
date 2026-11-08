@@ -41,11 +41,27 @@ export default function SignUpPage() {
     setBusy(true);
     setError(null);
     try {
-      const { session } = await signUp(form.email.trim(), form.password, form.name.trim().slice(0, 40));
-      if (session) navigate(next, { replace: true });
-      else setCheckEmail(true); // email confirmation is switched on in Supabase
+      const { session, user } = await signUp(form.email.trim(), form.password, form.name.trim().slice(0, 40));
+      if (session) {
+        navigate(next, { replace: true });
+      } else if (user && user.identities?.length === 0) {
+        // Supabase hides "already registered" (to protect privacy) by returning a
+        // user with no identities and sending no email. Say so instead of
+        // telling them to wait for an email that will never come.
+        setErrors({ email: 'This email already has an account.' });
+        setError(new Error('An account with this email already exists. Sign in instead, or use "Forgot password" on the sign-in page.'));
+      } else {
+        setCheckEmail(true); // email confirmation is switched on in Supabase
+      }
     } catch (err) {
-      setError(err);
+      const msg = err?.message ?? '';
+      if (/rate limit/i.test(msg)) {
+        setError(new Error('Too many sign-up emails were sent recently. Please wait a few minutes and try again.'));
+      } else if (/not authorized|sending confirmation/i.test(msg)) {
+        setError(new Error('We couldn’t send the confirmation email to this address. Please try again later or contact the Noon team.'));
+      } else {
+        setError(err);
+      }
     } finally {
       setBusy(false);
     }
@@ -60,6 +76,9 @@ export default function SignUpPage() {
           </div>
           <p className="mt-4 text-sm text-muted">
             We sent a confirmation link to <b className="text-ink">{form.email}</b>. Tap it to finish creating your account.
+          </p>
+          <p className="mt-3 text-xs text-muted">
+            Not there after a few minutes? Check your Spam or Promotions folder. The email comes from Supabase Auth.
           </p>
           <Button to="/signin" variant="secondary" className="mt-6">
             Back to sign in
