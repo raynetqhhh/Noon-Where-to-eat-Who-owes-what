@@ -2,6 +2,7 @@
   "name": "noon",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "description": "Decide where to eat, then split the bill fairly.",
   "workspaces": [
     "client",
