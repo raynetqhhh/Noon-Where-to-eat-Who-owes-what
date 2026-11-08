@@ -7,6 +7,13 @@ export class ApiError extends Error {
     this.details = details;
   }
 
+  /** Server set-up problem whose message is safe to show, even in production. */
+  static misconfigured(message) {
+    const err = new ApiError(500, message);
+    err.expose = true;
+    return err;
+  }
+
   static badRequest(message = 'Bad request', details) {
     return new ApiError(400, message, details);
   }
