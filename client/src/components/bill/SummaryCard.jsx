@@ -36,7 +36,7 @@ export default function SummaryCard({ session, restaurant }) {
         )}
       </div>
       <div className="mt-5 flex items-center justify-between border-t border-white/20 pt-4">
-        <span className="font-display text-sm font-bold">noon</span>
+        <span className="font-display text-sm font-bold">Noon</span>
         <Button size="sm" variant="secondary" onClick={share}>
           <Share2 size={14} /> Share
         </Button>
