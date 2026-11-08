@@ -1,0 +1,20 @@
+{
+  "name": "noon",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Decide where to eat, then split the bill fairly.",
+  "workspaces": [
+    "client",
+    "server"
+  ],
+  "scripts": {
+    "dev:client": "npm run dev --workspace client",
+    "dev:server": "npm run dev --workspace server",
+    "build": "npm run build --workspace client",
+    "start": "npm run start --workspace server",
+    "test": "npm test --workspace server"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}
