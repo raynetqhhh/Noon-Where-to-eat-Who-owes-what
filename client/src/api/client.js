@@ -24,7 +24,9 @@ async function accessToken() {
  */
 export async function apiRequest(path, { method = 'GET', body, sessionCode } = {}) {
   const headers = { Accept: 'application/json' };
-  if (body !== undefined) headers['Content-Type'] = 'application/json';
+  // A Blob (e.g. a photo) is sent as-is with its own type; anything else as JSON.
+  const isBlob = typeof Blob !== 'undefined' && body instanceof Blob;
+  if (body !== undefined) headers['Content-Type'] = isBlob ? body.type : 'application/json';
 
   const jwt = await accessToken();
   if (jwt) headers.Authorization = `Bearer ${jwt}`;
@@ -37,7 +39,7 @@ export async function apiRequest(path, { method = 'GET', body, sessionCode } = {
     response = await fetch(`${BASE_URL}${path}`, {
       method,
       headers,
-      body: body !== undefined ? JSON.stringify(body) : undefined,
+      body: body === undefined ? undefined : isBlob ? body : JSON.stringify(body),
     });
   } catch {
     throw new ApiRequestError(0, "Can't reach the Noon server. Is it running?");

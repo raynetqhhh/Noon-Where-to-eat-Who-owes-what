@@ -17,6 +17,11 @@ export function unwrap({ data, error }) {
       throw ApiError.misconfigured(
         'The server is using the wrong Supabase key. SUPABASE_SERVICE_ROLE_KEY must be the secret (service_role) key.'
       );
+    case '42703': // undefined_column
+    case 'PGRST204': // column not in PostgREST's schema cache
+      throw ApiError.misconfigured(
+        'The database is missing a migration. Run the newest file in supabase/migrations in the Supabase SQL editor.'
+      );
     default:
       throw new ApiError(500, `Database error: ${error.message}`);
   }

@@ -2,6 +2,7 @@ import { CrewModel } from '../models/crewModel.js';
 import { HistoryModel } from '../models/historyModel.js';
 import { ProfileModel } from '../models/profileModel.js';
 import { buildFairnessBoard, buildInsights, buildLedger } from '../services/insightService.js';
+import { removeAvatar, storeAvatar } from '../services/avatarService.js';
 import { ensureProfile } from '../services/profileService.js';
 import { presentLunch, presentProfile, presentSettlement } from '../views/userView.js';
 
@@ -16,16 +17,40 @@ export async function getMe(req, res) {
 // PATCH /api/me
 export async function updateMe(req, res) {
   await ensureProfile(req.user);
-  const { displayName, dietary, allergies, paynowId } = req.body;
+  const columns = {
+    displayName: 'display_name',
+    dietary: 'dietary',
+    allergies: 'allergies',
+    paynowId: 'paynow_id',
+    tagline: 'tagline',
+    favouriteCuisines: 'favourite_cuisines',
+    favouriteFoods: 'favourite_foods',
+    spiceLevel: 'spice_level',
+  };
   const fields = {};
-  if (displayName !== undefined) fields.display_name = displayName;
-  if (dietary !== undefined) fields.dietary = dietary;
-  if (allergies !== undefined) fields.allergies = allergies;
-  if (paynowId !== undefined) fields.paynow_id = paynowId;
+  for (const [key, column] of Object.entries(columns)) {
+    if (req.body[key] !== undefined) fields[column] = req.body[key];
+  }
 
   const profile = Object.keys(fields).length
     ? await ProfileModel.update(req.user.id, fields)
     : await ProfileModel.findById(req.user.id);
+  res.json({ data: presentProfile(profile, req.user) });
+}
+
+// PUT /api/me/avatar   (raw image body, resized in the browser first)
+export async function uploadAvatar(req, res) {
+  await ensureProfile(req.user);
+  const avatarUrl = await storeAvatar(req.user.id, req.body);
+  const profile = await ProfileModel.update(req.user.id, { avatar_url: avatarUrl });
+  res.json({ data: presentProfile(profile, req.user) });
+}
+
+// DELETE /api/me/avatar
+export async function deleteAvatar(req, res) {
+  await ensureProfile(req.user);
+  await removeAvatar(req.user.id);
+  const profile = await ProfileModel.update(req.user.id, { avatar_url: null });
   res.json({ data: presentProfile(profile, req.user) });
 }
 

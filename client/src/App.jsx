@@ -23,6 +23,7 @@ const CrewsPage = lazy(() => import('./pages/portal/CrewsPage.jsx'));
 const CrewDetailPage = lazy(() => import('./pages/portal/CrewDetailPage.jsx'));
 const InsightsPage = lazy(() => import('./pages/portal/InsightsPage.jsx'));
 const SettingsPage = lazy(() => import('./pages/portal/SettingsPage.jsx'));
+const ProfilePage = lazy(() => import('./pages/portal/ProfilePage.jsx'));
 
 function ScrollToTop() {
   const { pathname, hash } = useLocation();
@@ -65,6 +66,7 @@ export default function App() {
             <Route path="crews" element={<CrewsPage />} />
             <Route path="crews/:crewId" element={<CrewDetailPage />} />
             <Route path="insights" element={<InsightsPage />} />
+            <Route path="profile" element={<ProfilePage />} />
             <Route path="settings" element={<SettingsPage />} />
           </Route>
 

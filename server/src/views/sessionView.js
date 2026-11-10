@@ -7,13 +7,19 @@ import { presentBill } from './billView.js';
 const one = (value) => (Array.isArray(value) ? (value[0] ?? null) : (value ?? null));
 
 export function presentParticipant(row) {
+  const profile = one(row.profile);
   return {
     id: row.id,
     displayName: row.display_name,
     isHost: row.is_host,
     hasAccount: Boolean(row.user_id),
     dietary: row.dietary ?? [],
-    paynowId: one(row.profile)?.paynow_id ?? null,
+    paynowId: profile?.paynow_id ?? null,
+    // Taste from the person's profile (signed-in people only). Allergies stay private.
+    avatarUrl: profile?.avatar_url ?? null,
+    favouriteCuisines: profile?.favourite_cuisines ?? [],
+    favouriteFoods: profile?.favourite_foods ?? [],
+    spiceLevel: profile?.spice_level ?? null,
     joinedAt: row.created_at,
   };
 }

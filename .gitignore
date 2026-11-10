@@ -27,3 +27,6 @@ supabase/.branches/
 
 # Vercel
 .vercel/
+
+# Playwright MCP screenshots / logs
+.playwright-mcp/
