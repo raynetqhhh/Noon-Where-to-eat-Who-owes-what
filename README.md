@@ -34,7 +34,8 @@ Noon is a small web app that helps a group of friends decide where to have lunch
 - Payments: running ledger netted per person across lunches, records, reminders, export
 - Crews: saved groups with dietary needs, budget, meeting point, fairness board
 - Insights: spend by month, cuisines, top places, decision times, streak, fairness boards
-- Settings: name, dietary needs, allergies, PayNow ID, theme (light/dark/system), password
+- Profile: photo upload (cropped and resized in the browser), one-line bio, favourite cuisines, go-to dishes, spice tolerance, dietary needs, allergies, PayNow ID, with a live preview card
+- Settings: theme (light/dark/system), password
 
 Mobile-first (bottom tab bar on phones), dark mode, keyboard accessible, reduced-motion aware.
 
@@ -91,7 +92,7 @@ Requires Node.js 22+.
    ```bash
    npm install
    ```
-2. **Database:** in your Supabase project's SQL editor, run both files in
+2. **Database:** in your Supabase project's SQL editor, run every file in
    `supabase/migrations/` **in order**.
 3. **Environment:**
    - `server/.env`: `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` (secret)
@@ -126,6 +127,8 @@ All routes are prefixed with `/api`.
 | PATCH  | `/sessions/:code/bill/settlements/:settlementId` | people involved / host  |
 | GET    | `/me`, `/me/lunches`, `/me/payments`, `/me/insights` | signed in           |
 | PATCH  | `/me`                                            | signed in               |
+| PUT    | `/me/avatar` (raw JPEG/PNG/WebP body, ≤ 2 MB)    | signed in               |
+| DELETE | `/me/avatar`                                     | signed in               |
 | CRUD   | `/crews`, `/crews/:crewId/members/:memberId`     | signed in (owner edits) |
 
 Money is always sent and stored as integer cents (`1290` = $12.90).

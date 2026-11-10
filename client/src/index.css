@@ -3,45 +3,47 @@
 /* Dark mode follows the .dark class on <html> (set by ThemeContext). */
 @custom-variant dark (&:where(.dark, .dark *));
 
-/* Semantic colour tokens. Components use bg-surface, text-muted, etc.,
-   so light/dark is handled here in one place. */
+/* Noon's look: a lunch-hour menu board. Warm paper, near-black ink, one
+   chilli-orange accent, a serif display face for headlines and a mono face
+   for numbers, codes and labels (like a receipt).
+   Components use bg-surface, text-muted, etc., so light/dark lives here. */
 :root {
-  --bg: #fffaf3;
-  --surface: #ffffff;
-  --surface-2: #fbf3e8;
-  --ink: #1c1917;
-  --muted: #6b5f55;
-  --line: #eadfd2;
-  --brand: #c2410c;
-  --brand-strong: #9a3412;
-  --brand-soft: #ffedd5;
+  --bg: #f3efe6;
+  --surface: #fbf9f4;
+  --surface-2: #e9e3d6;
+  --ink: #15130f;
+  --muted: #5d574d;
+  --line: #d6cebd;
+  --brand: #c93a0f;
+  --brand-strong: #a32d08;
+  --brand-soft: #f8ddcf;
   --on-brand: #ffffff;
-  --sun: #f59e0b;
-  --ok: #15803d;
-  --ok-soft: #dcfce7;
-  --bad: #b91c1c;
-  --bad-soft: #fee2e2;
-  --info-soft: #e0f2fe;
+  --sun: #e9ad1f;
+  --ok: #176a35;
+  --ok-soft: #d7ecd9;
+  --bad: #b3261e;
+  --bad-soft: #f6dad6;
+  --info-soft: #dde8ee;
   color-scheme: light;
 }
 
 .dark {
-  --bg: #13110f;
-  --surface: #1c1916;
-  --surface-2: #26221e;
-  --ink: #f6f1ea;
-  --muted: #b3a89c;
-  --line: #3a342e;
-  --brand: #fb923c;
-  --brand-strong: #fdba74;
-  --brand-soft: #3a2314;
-  --on-brand: #1c1917;
-  --sun: #fbbf24;
-  --ok: #4ade80;
-  --ok-soft: #14301d;
-  --bad: #f87171;
-  --bad-soft: #3b1717;
-  --info-soft: #102a3a;
+  --bg: #11100e;
+  --surface: #1a1815;
+  --surface-2: #25221e;
+  --ink: #f2eee5;
+  --muted: #a8a194;
+  --line: #36322c;
+  --brand: #ff6b3d;
+  --brand-strong: #ff9470;
+  --brand-soft: #3b1d12;
+  --on-brand: #15130f;
+  --sun: #f2bd3d;
+  --ok: #5fd18a;
+  --ok-soft: #133021;
+  --bad: #ff7b72;
+  --bad-soft: #3a1714;
+  --info-soft: #14262f;
   color-scheme: dark;
 }
 
@@ -62,15 +64,64 @@
   --color-bad: var(--bad);
   --color-bad-soft: var(--bad-soft);
   --color-info-soft: var(--info-soft);
-  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "Bricolage Grotesque", "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Geist", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Instrument Serif", ui-serif, Georgia, serif;
+  --font-mono: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* Tighter corners than Tailwind's defaults: printed menus, not bubbles.
+     Pills (rounded-full) stay round on purpose. */
+  --radius-lg: 0.375rem;
+  --radius-xl: 0.5rem;
+  --radius-2xl: 0.625rem;
+  --radius-3xl: 0.75rem;
+
+  /* Flat, crisp shadows instead of soft blurry glows. */
+  --shadow-sm: 0 1px 0 rgb(0 0 0 / 0.06);
+  --shadow-md: 0 2px 0 rgb(0 0 0 / 0.08);
+  --shadow-lg: 4px 4px 0 var(--ink);
+  --shadow-2xl: 6px 6px 0 var(--ink);
 }
 
 body {
   background: var(--bg);
   color: var(--ink);
   font-family: var(--font-sans);
+  font-feature-settings: "ss01";
   -webkit-font-smoothing: antialiased;
+}
+
+/* Instrument Serif ships one weight. Never fake-bold it. */
+.font-display {
+  font-synthesis: none;
+  letter-spacing: -0.01em;
+  line-height: 1;
+}
+
+/* Mono labels: small caps-style eyebrow text used across the app. */
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* A receipt-style dashed rule. */
+.rule-dashed {
+  border-top: 1px dashed var(--line);
+}
+
+/* Menu-board dotted leader between a name and its price/description. */
+.leader {
+  flex: 1;
+  min-width: 1.5rem;
+  border-bottom: 2px dotted var(--line);
+  transform: translateY(-0.3em);
+}
+
+::selection {
+  background: var(--brand);
+  color: var(--on-brand);
 }
 
 /* Visible keyboard focus everywhere. */
@@ -84,15 +135,25 @@ body {
   *::before,
   *::after {
     animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
 }
 
 @keyframes rise {
-  from { opacity: 0; transform: translateY(6px); }
+  from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: none; }
 }
 .animate-rise {
-  animation: rise 0.25s ease-out both;
+  animation: rise 0.5s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+/* Endless dish ticker on the landing page. */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.animate-marquee {
+  animation: marquee 40s linear infinite;
 }

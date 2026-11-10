@@ -7,7 +7,7 @@ const DETAILS_SELECT = `
   *,
   participants!participants_session_id_fkey (
     id, user_id, display_name, dietary, is_host, created_at,
-    profile:profiles!participants_user_id_fkey ( paynow_id )
+    profile:profiles!participants_user_id_fkey ( paynow_id, avatar_url, favourite_cuisines, favourite_foods, spice_level )
   ),
   suggestions!suggestions_session_id_fkey (
     id, name, cuisine, tags, price_per_head_cents, location, url, is_sponsored, deal,

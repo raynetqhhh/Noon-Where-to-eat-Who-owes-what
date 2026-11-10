@@ -1,7 +1,8 @@
 import { supabase } from '../config/supabase.js';
 import { unwrap } from '../utils/supabaseResult.js';
 
-const COLUMNS = 'id, display_name, dietary, allergies, paynow_id, created_at';
+const COLUMNS =
+  'id, display_name, dietary, allergies, paynow_id, avatar_url, tagline, favourite_cuisines, favourite_foods, spice_level, created_at';
 
 export const ProfileModel = {
   async findById(id) {

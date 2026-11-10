@@ -11,6 +11,11 @@ export function presentProfile(row, user) {
     dietary: row.dietary ?? [],
     allergies: row.allergies,
     paynowId: row.paynow_id,
+    avatarUrl: row.avatar_url ?? null,
+    tagline: row.tagline ?? null,
+    favouriteCuisines: row.favourite_cuisines ?? [],
+    favouriteFoods: row.favourite_foods ?? [],
+    spiceLevel: row.spice_level ?? null,
     createdAt: row.created_at,
   };
 }

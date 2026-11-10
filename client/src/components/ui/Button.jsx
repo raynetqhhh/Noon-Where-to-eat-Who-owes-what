@@ -1,19 +1,22 @@
 import { Loader2 } from 'lucide-react';
 import { Link } from 'react-router';
 
+// Primary is ink-on-paper and warms to the accent on hover: the accent is kept
+// for moments that matter, not every button.
 const VARIANTS = {
-  primary: 'bg-brand text-on-brand hover:bg-brand-strong shadow-sm',
-  secondary: 'bg-surface text-ink border border-line hover:bg-surface-2',
+  primary: 'bg-ink text-bg hover:bg-brand hover:text-on-brand',
+  accent: 'bg-brand text-on-brand hover:bg-brand-strong',
+  secondary: 'bg-transparent text-ink border border-ink/80 hover:bg-ink hover:text-bg',
   ghost: 'text-ink hover:bg-surface-2',
   danger: 'bg-bad-soft text-bad hover:brightness-95',
   success: 'bg-ok-soft text-ok hover:brightness-95',
 };
 
 const SIZES = {
-  sm: 'h-8 px-3 text-sm gap-1.5 rounded-lg',
-  md: 'h-10 px-4 text-sm gap-2 rounded-xl',
-  lg: 'h-12 px-6 text-base gap-2 rounded-xl',
-  icon: 'h-10 w-10 rounded-xl',
+  sm: 'h-8 px-3.5 text-sm gap-1.5 rounded-full',
+  md: 'h-10 px-5 text-sm gap-2 rounded-full',
+  lg: 'h-12 px-7 text-base gap-2 rounded-full',
+  icon: 'h-10 w-10 rounded-full',
 };
 
 /**
@@ -33,7 +36,7 @@ export default function Button({
   type = 'button',
   ...props
 }) {
-  const classes = `inline-flex items-center justify-center font-semibold transition-colors select-none disabled:opacity-50 disabled:pointer-events-none ${VARIANTS[variant]} ${SIZES[size]} ${className}`;
+  const classes = `inline-flex items-center justify-center font-medium transition-[color,background-color,transform] duration-150 select-none active:scale-[0.97] disabled:opacity-50 disabled:pointer-events-none ${VARIANTS[variant]} ${SIZES[size]} ${className}`;
   const content = (
     <>
       {loading && <Loader2 size={16} className="animate-spin" aria-hidden />}

@@ -19,6 +19,7 @@ import { useHotkeys } from '../../hooks/useHotkeys.js';
 import { useSession } from '../../hooks/useSession.js';
 import { MOODS, peopleNotCovered, tagEmoji } from '../../utils/dietary.js';
 import { formatCents } from '../../utils/money.js';
+import { cuisineLabel, tableFavourites } from '../../utils/taste.js';
 
 const SHORTCUTS = [
   ['1–9', 'Vote for a place'],
@@ -121,6 +122,7 @@ export default function SessionPage() {
   const maxVotes = Math.max(1, ...session.suggestions.map((s) => s.voteCount));
   const moodsInUse = MOODS.filter((m) => session.suggestions.some((s) => s.tags.includes(m.id)));
   const needs = [...new Set(session.participants.flatMap((p) => p.dietary))];
+  const tableTaste = tableFavourites(session.participants);
 
   return (
     <div className="space-y-5">
@@ -143,7 +145,7 @@ export default function SessionPage() {
         </div>
         <div className="mt-2 flex flex-wrap items-end justify-between gap-3">
           <div>
-            <h1 className="font-display text-3xl font-bold tracking-tight">{session.title}</h1>
+            <h1 className="font-display text-4xl sm:text-5xl">{session.title}</h1>
             <p className="mt-0.5 text-sm text-muted">
               Code <span className="font-mono font-semibold tracking-wider text-ink">{session.code}</span>
               {session.crew?.meetingPoint && (
@@ -172,7 +174,7 @@ export default function SessionPage() {
         <div className="flex flex-wrap items-center gap-x-4 gap-y-3">
           {session.participants.map((p) => (
             <div key={p.id} className="flex items-center gap-2">
-              <Avatar name={p.displayName} size="sm" />
+              <Avatar name={p.displayName} src={p.avatarUrl} size="sm" />
               <span className="text-sm">
                 {p.displayName}
                 {p.id === me?.id && <span className="text-muted"> (you)</span>}
@@ -182,6 +184,16 @@ export default function SessionPage() {
             </div>
           ))}
         </div>
+        {tableTaste.length > 0 && (
+          <p className="rule-dashed mt-3 flex flex-wrap items-baseline gap-x-3 gap-y-1 pt-3 text-sm">
+            <span className="eyebrow">The table likes</span>
+            {tableTaste.map((t) => (
+              <span key={t.id}>
+                {cuisineLabel(t.id)} <span className="font-mono text-xs text-muted">×{t.count}</span>
+              </span>
+            ))}
+          </p>
+        )}
       </Card>
 
       {!me && !session.isExpired && session.status !== 'closed' && session.status !== 'settled' && (

@@ -1,5 +1,6 @@
-import { AlertTriangle, Ban, Crown, ExternalLink, MapPin, ThumbsUp, Trash2 } from 'lucide-react';
+import { AlertTriangle, Ban, Crown, ExternalLink, Heart, MapPin, ThumbsUp, Trash2 } from 'lucide-react';
 import { peopleNotCovered, tagEmoji, tagLabel } from '../../utils/dietary.js';
+import { fansOf } from '../../utils/taste.js';
 import { formatCents } from '../../utils/money.js';
 import { AvatarStack } from '../ui/Avatar.jsx';
 import { Badge } from '../ui/Badge.jsx';
@@ -21,6 +22,7 @@ export default function SuggestionCard({
   onPick,
 }) {
   const notCovered = peopleNotCovered(s.tags, participants);
+  const fans = fansOf(s, participants);
   const overBudget = budgetCents && s.pricePerHeadCents && s.pricePerHeadCents > budgetCents;
   const vetoed = s.vetoCount > 0;
   const voterNames = s.voterIds.map((id) => participants.find((p) => p.id === id)?.displayName ?? '?');
@@ -75,6 +77,12 @@ export default function SuggestionCard({
               ))}
             </div>
           )}
+          {fans.length > 0 && (
+            <p className="mt-2 flex items-start gap-1.5 text-xs text-ink">
+              <Heart size={13} className="mt-px shrink-0 fill-brand text-brand" aria-hidden />
+              {fans.map((p) => (p.id === me?.id ? 'You' : p.displayName)).join(', ')} {fans.length === 1 && fans[0].id !== me?.id ? 'loves' : 'love'} this kind of food
+            </p>
+          )}
           {notCovered.length > 0 && (
             <p className="mt-2 flex items-start gap-1.5 text-xs text-bad">
               <AlertTriangle size={13} className="mt-px shrink-0" aria-hidden />
@@ -84,7 +92,7 @@ export default function SuggestionCard({
           {showDeal && <p className="mt-2 text-xs font-medium text-ok">🎁 Group deal: {s.deal}</p>}
         </div>
         <div className="text-right">
-          <span className="font-display text-2xl font-bold tabular-nums">{s.voteCount}</span>
+          <span className="font-mono text-2xl font-medium tabular-nums">{s.voteCount}</span>
           <span className="block text-[11px] text-muted">vote{s.voteCount === 1 ? '' : 's'}</span>
         </div>
       </div>

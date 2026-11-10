@@ -2,6 +2,7 @@ import { ArrowRight, CalendarDays, HandCoins, Plus, Ticket, Trophy, Wallet } fro
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router';
 import { getLunches, getPayments } from '../../api/me.js';
+import Avatar from '../../components/ui/Avatar.jsx';
 import { StatusBadge } from '../../components/ui/Badge.jsx';
 import Button from '../../components/ui/Button.jsx';
 import { Card, CardHeader, EmptyState, Stat } from '../../components/ui/Card.jsx';
@@ -25,15 +26,33 @@ export default function DashboardPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-wrap items-end justify-between gap-4">
-        <div>
-          <p className="text-sm text-muted">{greeting()}</p>
-          <h1 className="font-display text-3xl font-bold tracking-tight">Hi {profile?.displayName ?? 'there'} 👋</h1>
+      <div className="flex flex-wrap items-end justify-between gap-4 border-b border-line pb-6">
+        <div className="flex items-end gap-4">
+          <Link to="/app/profile" aria-label="Your profile" className="shrink-0">
+            <Avatar name={profile?.displayName ?? '?'} src={profile?.avatarUrl} size="xl" />
+          </Link>
+          <div>
+            <p className="eyebrow">{greeting()}</p>
+            <h1 className="mt-1 font-display text-5xl sm:text-6xl">{profile?.displayName ?? 'Hello'}.</h1>
+          </div>
         </div>
-        <Button to="/app/new" size="lg">
+        <Button to="/app/new" variant="accent" size="lg" className="md:hidden">
           <Plus size={18} /> Start a lunch
         </Button>
       </div>
+
+      {profile && !profile.avatarUrl && !profile.favouriteCuisines?.length && (
+        <Link
+          to="/app/profile"
+          className="group flex items-center justify-between gap-4 rounded-2xl border border-dashed border-ink/40 px-5 py-4 text-sm transition-colors hover:border-ink"
+        >
+          <span>
+            <span className="font-medium">Make your lunch card yours.</span>{' '}
+            <span className="text-muted">Add a photo and the food you love.</span>
+          </span>
+          <ArrowRight size={16} className="shrink-0 transition-transform group-hover:translate-x-0.5" />
+        </Link>
+      )}
 
       <ErrorMessage error={error} onRetry={reload} />
 

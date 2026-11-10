@@ -4,6 +4,9 @@ import { apiRequest } from './client.js';
 
 export const getMe = () => apiRequest('/me');
 export const updateMe = (body) => apiRequest('/me', { method: 'PATCH', body });
+/** photo: a Blob from squarePhoto() */
+export const uploadAvatar = (photo) => apiRequest('/me/avatar', { method: 'PUT', body: photo });
+export const deleteAvatar = () => apiRequest('/me/avatar', { method: 'DELETE' });
 export const getLunches = () => apiRequest('/me/lunches');
 export const getPayments = () => apiRequest('/me/payments');
 export const getInsights = () => apiRequest('/me/insights');

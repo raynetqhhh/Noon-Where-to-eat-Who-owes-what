@@ -23,10 +23,10 @@ export function Chip({ pressed, onClick, children, className = '', disabled }) {
       aria-pressed={pressed}
       onClick={onClick}
       disabled={disabled}
-      className={`inline-flex min-h-8 items-center gap-1.5 rounded-full border px-3 py-1 text-sm transition disabled:opacity-50 ${
+      className={`inline-flex min-h-9 items-center gap-1.5 rounded-full border px-3.5 py-1 text-sm transition-colors disabled:opacity-50 ${
         pressed
-          ? 'border-brand bg-brand-soft font-semibold text-brand'
-          : 'border-line bg-surface text-ink hover:bg-surface-2'
+          ? 'border-ink bg-ink text-bg'
+          : 'border-line bg-transparent text-ink hover:border-ink'
       } ${className}`}
     >
       {children}

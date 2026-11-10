@@ -28,11 +28,11 @@ export default function PublicLayout() {
           <Logo />
           <nav className="ml-6 hidden items-center gap-1 md:flex" aria-label="Main">
             {LINKS.map((l) => (
-              <a key={l.href} href={l.href} className="rounded-lg px-3 py-2 text-sm text-muted hover:bg-surface-2 hover:text-ink">
+              <a key={l.href} href={l.href} className="rounded-full px-3 py-2 text-sm text-muted underline-offset-[6px] hover:text-ink hover:underline">
                 {l.label}
               </a>
             ))}
-            <Link to="/join" className="rounded-lg px-3 py-2 text-sm text-muted hover:bg-surface-2 hover:text-ink">
+            <Link to="/join" className="rounded-full px-3 py-2 text-sm text-muted underline-offset-[6px] hover:text-ink hover:underline">
               Join a lunch
             </Link>
           </nav>
@@ -99,24 +99,26 @@ export default function PublicLayout() {
         <Outlet />
       </main>
 
-      <footer className="border-t border-line">
-        <div className="mx-auto grid max-w-6xl gap-8 px-4 py-10 text-sm text-muted sm:grid-cols-3">
-          <div>
-            <Logo />
-            <p className="mt-3 max-w-xs">One link to decide where to eat, and to settle who owes what afterwards.</p>
-          </div>
+      <footer className="border-t border-ink">
+        <div className="mx-auto grid max-w-6xl gap-8 px-4 py-12 text-sm text-muted sm:grid-cols-[2fr_1fr_1fr]">
+          <p className="max-w-xs">One link to decide where to eat, and to settle who owes what afterwards.</p>
           <div className="flex flex-col gap-2">
-            <span className="font-semibold text-ink">Product</span>
+            <span className="eyebrow mb-1">Product</span>
             <a href="/#features" className="hover:text-ink">Features</a>
             <a href="/#pricing" className="hover:text-ink">Pricing</a>
             <Link to="/join" className="hover:text-ink">Join with a code</Link>
           </div>
           <div className="flex flex-col gap-2">
-            <span className="font-semibold text-ink">Trust</span>
+            <span className="eyebrow mb-1">Trust</span>
             <span>First names only. No ads in your lunch. Sponsored spots are always labelled.</span>
           </div>
         </div>
-        <p className="pb-8 text-center text-xs text-muted">© {new Date().getFullYear()} Noon · A weekend venture experiment</p>
+        <div className="mx-auto max-w-6xl overflow-hidden px-4">
+          <p className="select-none font-display text-[clamp(6rem,26vw,22rem)] leading-[0.75] tracking-[-0.03em] text-ink" aria-hidden>
+            Noon<span className="text-brand">.</span>
+          </p>
+        </div>
+        <p className="mx-auto max-w-6xl px-4 py-6 font-mono text-xs text-muted">© {new Date().getFullYear()} Noon · A weekend venture experiment</p>
       </footer>
     </div>
   );
